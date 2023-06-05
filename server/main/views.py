@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.urls import reverse
 from .helpers import del_profile
-from .models import UserProfile, Roles, Game
+from .models import UserProfile, Roles
+from game.models import Game
 # Create your views here.
 
 def index(request):
@@ -53,7 +54,14 @@ def start(request):
         if request.POST["join"]:
             #join
             #TODO
-            pass
+            game = Game.objects.get(name=request.POST['room'], code=request.POST['code'])
+            if game:
+                game.player2 = user
+                game.init = True
+                game.role2 = user.role
+                
+            return Http404
+
 
         elif request.POST['create']:
             #create
