@@ -9,4 +9,6 @@
 - [ ] server logics
 - [ ] client
 - [ ] GUI
+- [ ] LOGGER
+- [ ] unit test
 - [ ] and ...
