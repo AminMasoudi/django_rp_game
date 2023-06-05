@@ -4,7 +4,7 @@ from django.db import models
 import threading
 import time
 
-REFRESH_TIME_FOR_PL2 = 0.5
+REFRESH_TIME_FOR_PL2 = 1
 TIME_TO_WAIT = 300
 
 class Roles(models.Model):
@@ -56,6 +56,10 @@ class Game(models.Model):
     def role_play(self):
         #TODO
         pass
+
+    def is_valid(self):
+        #TODO
+        raise NotImplementedError
 
 
     def wait_for_p2(self):

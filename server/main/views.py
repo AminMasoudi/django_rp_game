@@ -52,7 +52,9 @@ def start(request):
         user = UserProfile.objects.get(user=request.user)
         if request.POST["join"]:
             #join
+            #TODO
             pass
+
         elif request.POST['create']:
             #create
             if Game.objects.get(name=request.POST['name']):
@@ -64,3 +66,12 @@ def start(request):
                 code=request.POST['code'],
                 player1= user
             )
+            game.init_the_game()
+            return JsonResponse({
+                'msg': 'the game is inited and we are waiting for second player',
+                'room': request.POST['name'],
+                'code': request.POST['code'],
+                'next': f'/game/waiting/{request.POST["name"]}'
+            })
+
+            
