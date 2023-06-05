@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.http import JsonResponse
 from django.urls import reverse
 from .helpers import del_profile
-from .models import UserProfile, Rolls
+from .models import UserProfile, Roles, Game
 # Create your views here.
 
 def index(request):
@@ -20,30 +20,47 @@ def auth(request):
             user = request.user
             logout(request)
             del_profile(user)
-        rolls = Rolls.objects.all()
-        rolls = list(map(lambda roll : roll.rep(), rolls))
+        roles = Roles.objects.all()
+        roles = list(map(lambda role : role.rep(), roles))
         return JsonResponse({
             "todo"  : "auth",
             "name"  : "",
-            "rolls" : rolls
+            "roles" : roles
         })
     
     name = request.POST['name']
-    roll = request.POST['roll']
+    role = request.POST['role']
     if not UserProfile.objects.get(name=name):
         user = UserProfile.objects.create(name=name)
-        user.roll = Rolls.objects.get(name=roll)
+        user.role = Roles.objects.get(name=role)
         return JsonResponse({
             'msg'   : 'DONE',
             'user'  : name,
-            'roll'  : roll,
+            'role'  : user.role,
             'next'  : reverse("main:start")
         })
-
-
-
 
 @login_required
 def start(request):
     if request.method == "GET":
-        pass
+        return JsonResponse({
+            "msg"    : "join or create a new game", 
+            "join"   : False,
+            "create" : False
+        })
+    if request.method == "POST":
+        user = UserProfile.objects.get(user=request.user)
+        if request.POST["join"]:
+            #join
+            pass
+        elif request.POST['create']:
+            #create
+            if Game.objects.get(name=request.POST['name']):
+               return JsonResponse({
+                   'msg' : 'game exist'
+               })
+            game = Game.objects.create(
+                name=request.POST['name'],
+                code=request.POST['code'],
+                player1= user
+            )
