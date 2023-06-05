@@ -2,6 +2,8 @@
 
 
 ### TODO
+- [ ] fix those bugs
+- [ ] user auth
 - [ ] cleaning the code
   - [ ]  move Game to game app
   - [ ]  use helpers
