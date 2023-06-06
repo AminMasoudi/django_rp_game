@@ -20,10 +20,11 @@ class Roles(models.Model):
         }
         return d
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
-    role = models.ForeignKey(Roles, on_delete=models.CASCADE)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=20)
+#     role = models.ForeignKey(Roles, on_delete=models.CASCADE)
     
-    def __str__(self) -> str:
-        return f"<{self.pk}: {self.user}>"
+#     def __str__(self) -> str:
+#         return f"<{self.pk}: {self.user}>"
+    

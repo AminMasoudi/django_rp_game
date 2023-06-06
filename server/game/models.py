@@ -1,5 +1,6 @@
 from django.db import models
-from main.models import UserProfile, Roles
+from main.models import Roles
+from user.models import UserProfile
 import time
 import threading
 
@@ -14,6 +15,11 @@ STANDARD_ACTIONS = ["def",
                     "fight",
                     ]
 
+GAME_STATUS = [
+    "pending",
+    "waiting",
+    "new_result"
+]
 
 # Create your models here.
 
@@ -27,13 +33,13 @@ class Game(models.Model):
     def init_the_game(self):
         self.role1 = self.player1.role
         self.init = False
+        self.status = GAME_STATUS[0]
         wait_thread = threading.Thread(target=self.wait_for_p2)
         wait_thread.start()
         wait_thread.join(TIME_TO_WAIT)
         if self.init:
-            #TODO
-            pass
-        
+            self.status = GAME_STATUS[1]
+
         else:
             #TODO: Log
             self.delete()
@@ -41,7 +47,7 @@ class Game(models.Model):
 
     def role_play(self):
         #TODO
-        pass
+        return NotImplementedError
 
     def is_valid(self):
         #TODO
